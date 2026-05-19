@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алексей - Data Analyst</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="logo">АА</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Главная</a></li>
+                <li><a href="#about" class="nav-link">О себе</a></li>
+                <li><a href="#skills" class="nav-link">Навыки</a></li>
+                <li><a href="#portfolio" class="nav-link">Портфолио</a></li>
+                <li><a href="#contact" class="nav-link">Контакты</a></li>
+                <li><a href="#" class="nav-link" id="navDownloadResume">Скачать резюме</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero секция -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-greeting">Привет, я</span>
+                    <br>
+                    <span class="hero-name">Алексей</span>
+                </h1>
+                <p class="hero-subtitle">Data Analyst & BI Specialist</p>
+                <p class="hero-description">
+                    Анализирую данные, создаю визуализации и помогаю принимать 
+                    обоснованные бизнес-решения на основе цифр и инсайтов.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#portfolio" class="btn btn-primary">Мои проекты</a>
+                    <a href="#" class="btn btn-secondary" id="downloadResume">Скачать резюме</a>
+                    <a href="#contact" class="btn btn-outline">Связаться</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-avatar"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О себе -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">О себе</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        Я опытный data analyst с более чем 5-летним опытом работы 
+                        с данными и бизнес-аналитикой. Моя страсть — превращать 
+                        сложные данные в понятные инсайты.
+                    </p>
+                    <p>
+                        Специализируюсь на анализе бизнес-метрик, создании 
+                        дашбордов и автоматизации отчетных процессов. Умею 
+                        работать с большими объемами данных и выделять ключевые 
+                        тренды для принятия стратегических решений.
+                    </p>
+                    <p>
+                        Постоянно изучаю новые технологии и методики анализа 
+                        данных, чтобы быть в курсе последних трендов индустрии.
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Проектов</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Лет опыта</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">20+</div>
+                        <div class="stat-label">Клиентов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Навыки -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Навыки</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Инструменты</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">SQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Power BI</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="88"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Excel</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="95"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Методологии</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">A/B тестирование</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Статистический анализ</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Машинное обучение</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="75"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Data Mining</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-skill="80"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Портфолио -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Портфолио</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="dashboard">
+                    <div class="portfolio-image">
+                        <div class="portfolio-placeholder"></div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Дашборд продаж</h3>
+                        <p class="portfolio-description">
+                            Интерактивный дашборд для мониторинга ключевых 
+                            метрик продаж и эффективности маркетинга
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="tag">Power BI</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">DAX</span>
+                        </div>
+                        <a href="#" class="portfolio-link" onclick="showPortfolioDetails('dashboard'); return false;">Подробнее</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="analysis">
+                    <div class="portfolio-image">
+                        <div class="portfolio-placeholder"></div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">RFM анализ клиентов</h3>
+                        <p class="portfolio-description">
+                            Сегментация клиентов по методу RFM для оптимизации 
+                            маркетинговых кампаний
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Pandas</span>
+                            <span class="tag">Scikit-learn</span>
+                        </div>
+                        <a href="#" class="portfolio-link" onclick="showPortfolioDetails('rfm'); return false;">Подробнее</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="automation">
+                    <div class="portfolio-image">
+                        <div class="portfolio-placeholder"></div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Автоматизация отчетов</h3>
+                        <p class="portfolio-description">
+                            Автоматизированная система генерации ежедневных 
+                            и еженедельных отчетов
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Airflow</span>
+                            <span class="tag">PostgreSQL</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Подробнее</a>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="research">
+                    <div class="portfolio-image">
+                        <div class="portfolio-placeholder"></div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Исследование рынка</h3>
+                        <p class="portfolio-description">
+                            Анализ рыночных тенденций и конкурентов для 
+                            стратегического планирования
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="tag">Tableau</span>
+                            <span class="tag">R</span>
+                            <span class="tag">Statistics</span>
+                        </div>
+                        <a href="#" class="portfolio-link">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Контакты</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>aleksei@example.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h4>Телефон</h4>
+                            <p>+7 (999) 123-45-67</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💼</div>
+                        <div class="contact-details">
+                            <h4>LinkedIn</h4>
+                            <p>linkedin.com/in/aleksei</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🐙</div>
+                        <div class="contact-details">
+                            <h4>GitHub</h4>
+                            <p>github.com/aleksei</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required>
+                            <label for="name">Имя</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <label for="message">Сообщение</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Алексей. Все права защищены.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📧</a>
+                    <a href="#" class="social-link">💼</a>
+                    <a href="#" class="social-link">🐙</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для резюме -->
+    <div id="resumeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Скачать резюме</h3>
+            <p>Выберите формат резюме для скачивания:</p>
+            <div class="resume-buttons">
+                <a href="assets/documents/resume.pdf" class="btn btn-primary" download>PDF</a>
+                <a href="assets/documents/resume.docx" class="btn btn-secondary" download>DOCX</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
