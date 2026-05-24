@@ -297,46 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Counter animation for stats
-    function animateCounter(element, target, duration = 2000) {
-        let start = 0;
-        const increment = target / (duration / 16);
-        
-        function updateCounter() {
-            start += increment;
-            if (start < target) {
-                element.textContent = Math.floor(start);
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = target;
-            }
-        }
-        
-        updateCounter();
-    }
-    
-    // Animate stats when they come into view
-    const statNumbers = document.querySelectorAll('.stat-number');
-    const animateStats = function() {
-        statNumbers.forEach(stat => {
-            const rect = stat.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                const target = parseInt(stat.textContent);
-                const text = stat.textContent;
-                stat.textContent = '0';
-                animateCounter(stat, target);
-                
-                // Re-add the + symbol if it was there
-                if (text.includes('+')) {
-                    setTimeout(() => {
-                        stat.textContent += '+';
-                    }, target + 100);
-                }
-            }
-        });
-    };
-    
-    window.addEventListener('scroll', animateStats);
     
     // Initialize animations
     animateSkills();

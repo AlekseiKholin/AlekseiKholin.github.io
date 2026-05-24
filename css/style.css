@@ -15,6 +15,18 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Dark theme variables */
+[data-theme="dark"] {
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --bg-accent: #1e3a8a;
+    --border-color: #374151;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
 /* Base Styles */
 * {
     margin: 0;
@@ -132,6 +144,31 @@ p {
     display: none;
     flex-direction: column;
     cursor: pointer;
+}
+
+.theme-toggle {
+    background: none;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary-color);
+    transform: rotate(180deg);
+    background: var(--bg-secondary);
+}
+
+.theme-icon {
+    transition: var(--transition);
 }
 
 .hamburger span {
@@ -272,17 +309,18 @@ p {
     border-radius: 50%;
     position: relative;
     animation: float 6s ease-in-out infinite;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.hero-avatar::before {
-    content: '📊';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 4rem;
-    color: white;
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
+
 
 /* Section Styles */
 .section-header {
@@ -354,6 +392,17 @@ p {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     display: block;
+    transition: all 0.3s ease;
+}
+
+.stat-number.animating {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.stat-number.animated {
+    color: inherit;
+    transform: scale(1);
 }
 
 .stat-label {
@@ -725,6 +774,10 @@ p {
     .hamburger {
         display: flex;
     }
+
+    .theme-toggle {
+        display: flex;
+    }
     
     .nav-menu {
         position: fixed;
@@ -746,20 +799,21 @@ p {
     .hero .container {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 2rem;
     }
-    
+
     .hero-name {
         font-size: 2.5rem;
     }
-    
+
     .hero-image {
-        order: -1;
-        margin-bottom: 2rem;
+        margin-bottom: 0;
     }
     
     .hero-avatar {
         width: 200px;
         height: 200px;
+        border-width: 3px;
     }
     
     .about-content {
