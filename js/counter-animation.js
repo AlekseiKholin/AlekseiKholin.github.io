@@ -1,32 +1,34 @@
 // Simple counter animation with Intersection Observer
 document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем поддержку Intersection Observer
+    const hasIntersectionObserver = 'IntersectionObserver' in window;
+    
+    // Флаг для предотвращения двойной анимации
+    let isAnimating = false;
+    
     // Counter animation function
-    function animateCounter(element, target, duration = 2000) {
+    function animateCounter(element, target, duration = 2000, hasPlus = false) {
         let start = 0;
         const increment = target / (duration / 16);
-        let isAnimating = true;
+        let elementAnimating = true;
 
-        // Add initial animation effects
-        element.style.transition = 'color 0.3s ease, transform 0.3s ease';
-        element.style.color = 'var(--primary-color)';
-        element.style.transform = 'scale(1.1)';
+        // Добавляем класс анимации вместо inline-стилей
+        element.classList.add('animating');
 
         function updateCounter() {
-            if (!isAnimating) return;
+            if (!elementAnimating) return;
 
             start += increment;
             if (start < target) {
                 element.textContent = Math.floor(start);
                 requestAnimationFrame(updateCounter);
             } else {
-                element.textContent = target;
+                element.textContent = hasPlus ? Math.floor(target) + '+' : target;
                 // Return to normal state after animation
                 setTimeout(() => {
-                    element.style.color = '';
-                    element.style.transform = 'scale(1)';
-                    element.style.transition = '';
-                    // Mark as fully animated
+                    element.classList.remove('animating');
                     element.classList.add('animated');
+                    elementAnimating = false;
                     isAnimating = false;
                 }, 300);
             }
@@ -41,74 +43,97 @@ document.addEventListener('DOMContentLoaded', function() {
         rootMargin: '0px 0px -100px 0px'
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    const observer = hasIntersectionObserver ? new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const stat = entry.target;
+            if (entry.isIntersecting && !isAnimating) {
+                const stats = Array.from(statNumbers).filter(stat => 
+                    !stat.classList.contains('animated') && !stat.classList.contains('animating')
+                );
                 
-                // Check if not already animated
-                if (!stat.classList.contains('animated')) {
-                    const target = parseInt(stat.textContent);
-                    const hasPlus = stat.textContent.includes('+');
+                if (stats.length > 0) {
+                    isAnimating = true;
                     
-                    // Reset to 0 for animation
-                    stat.textContent = '0';
-                    stat.classList.add('animating');
-                    
-                    // Start counter animation
-                    animateCounter(stat, target);
-                    
-                    // Re-add the + symbol after animation
-                    if (hasPlus) {
-                        setTimeout(() => {
-                            if (stat.classList.contains('animated')) {
-                                stat.textContent = target + '+';
-                            }
-                        }, 2100);
-                    }
-                    
-                    // Stop observing after animation completes
-                    observer.unobserve(stat);
+                    // Запускаем анимацию для всех элементов одновременно
+                    stats.forEach(stat => {
+                        // Извлекаем числовое значение и наличие + символа
+                        const textContent = stat.textContent.trim();
+                        const target = parseFloat(textContent);
+                        const hasPlus = textContent.includes('+');
+
+                        // Reset to empty for animation
+                        stat.textContent = '';
+                        stat.classList.add('animating');
+
+                        // Start counter animation
+                        animateCounter(stat, target, 2000, hasPlus);
+                    });
                 }
             }
         });
-    }, observerOptions);
+    }, observerOptions) : null;
 
     // Observe all stat number elements
     const statNumbers = document.querySelectorAll('.stat-number');
-    
-    // Initially observe all stats
-    statNumbers.forEach(stat => {
-        observer.observe(stat);
-    });
 
-    // Fallback: trigger animation on scroll for users without Intersection Observer support
-    function animateStatsFallback() {
+    // Initially observe all stats (если Intersection Observer поддерживается)
+    if (hasIntersectionObserver && observer) {
         statNumbers.forEach(stat => {
-            if (!stat.classList.contains('animated')) {
-                const rect = stat.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    const target = parseInt(stat.textContent);
-                    const hasPlus = stat.textContent.includes('+');
-                    
-                    stat.textContent = '0';
-                    stat.classList.add('animating');
-                    animateCounter(stat, target);
-                    
-                    if (hasPlus) {
-                        setTimeout(() => {
-                            if (stat.classList.contains('animated')) {
-                                stat.textContent = target + '+';
-                            }
-                        }, 2100);
-                    }
-                }
-            }
+            observer.observe(stat);
         });
+    } else {
+        // Если Intersection Observer не поддерживается, запускаем анимацию сразу
+        triggerInitialAnimation();
     }
 
-    // Add fallback event listener
-    window.addEventListener('scroll', animateStatsFallback);
+    // Функция для первоначальной анимации (fallback)
+    function triggerInitialAnimation() {
+        const stats = Array.from(statNumbers).filter(stat => 
+            !stat.classList.contains('animated') && !stat.classList.contains('animating')
+        );
+        
+        if (stats.length > 0 && !isAnimating) {
+            isAnimating = true;
+            
+            // Запускаем анимацию для всех элементов одновременно
+            stats.forEach(stat => {
+                const rect = stat.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const textContent = stat.textContent.trim();
+                    const target = parseFloat(textContent);
+                    const hasPlus = textContent.includes('+');
+
+                    // Reset to empty for animation
+                    stat.textContent = '';
+                    stat.classList.add('animating');
+                    animateCounter(stat, target, 2000, hasPlus);
+                }
+            });
+        }
+    }
+
+    // Оптимизированный обработчик scroll события
+    function animateStatsFallback() {
+        // Проверяем, есть ли элементы, которые нужно анимировать
+        const needsAnimation = Array.from(statNumbers).some(stat => 
+            !stat.classList.contains('animated') && !stat.classList.contains('animating')
+        );
+        
+        if (needsAnimation && !isAnimating) {
+            triggerInitialAnimation();
+        }
+    }
+
+    // Добавляем throttle для оптимизации scroll событий
+    let isScrolling = false;
+    window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+            requestAnimationFrame(() => {
+                animateStatsFallback();
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    }, { passive: true });
 
     // Clean up function to prevent memory leaks
     const cleanup = () => {

@@ -15,17 +15,6 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark theme variables */
-[data-theme="dark"] {
-    --text-primary: #f9fafb;
-    --text-secondary: #d1d5db;
-    --bg-primary: #111827;
-    --bg-secondary: #1f2937;
-    --bg-accent: #1e3a8a;
-    --border-color: #374151;
-    --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
 
 /* Base Styles */
 * {
@@ -393,16 +382,35 @@ p {
     background-clip: text;
     display: block;
     transition: all 0.3s ease;
+    opacity: 1;
+    transform: scale(1);
 }
 
 .stat-number.animating {
     color: var(--primary-color);
     transform: scale(1.1);
+    animation: counterPulse 2s ease-out;
 }
 
 .stat-number.animated {
     color: inherit;
     transform: scale(1);
+    animation: none;
+}
+
+@keyframes counterPulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .stat-label {
