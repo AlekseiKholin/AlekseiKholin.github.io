@@ -1,146 +1,79 @@
-// Simple counter animation with Intersection Observer
+// Counter animation with Intersection Observer
 document.addEventListener('DOMContentLoaded', function() {
-    // Проверяем поддержку Intersection Observer
-    const hasIntersectionObserver = 'IntersectionObserver' in window;
-    
-    // Флаг для предотвращения двойной анимации
-    let isAnimating = false;
-    
-    // Counter animation function
-    function animateCounter(element, target, duration = 2000, hasPlus = false) {
-        let start = 0;
-        const increment = target / (duration / 16);
-        let elementAnimating = true;
-
-        // Добавляем класс анимации вместо inline-стилей
-        element.classList.add('animating');
-
-        function updateCounter() {
-            if (!elementAnimating) return;
-
-            start += increment;
-            if (start < target) {
-                element.textContent = Math.floor(start);
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = hasPlus ? Math.floor(target) + '+' : target;
-                // Return to normal state after animation
-                setTimeout(() => {
-                    element.classList.remove('animating');
-                    element.classList.add('animated');
-                    elementAnimating = false;
-                    isAnimating = false;
-                }, 300);
-            }
-        }
-
-        updateCounter();
-    }
-
-    // Setup Intersection Observer for scroll-triggered animations
-    const observerOptions = {
-        threshold: 0.3,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = hasIntersectionObserver ? new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !isAnimating) {
-                const stats = Array.from(statNumbers).filter(stat => 
-                    !stat.classList.contains('animated') && !stat.classList.contains('animating')
-                );
-                
-                if (stats.length > 0) {
-                    isAnimating = true;
-                    
-                    // Запускаем анимацию для всех элементов одновременно
-                    stats.forEach(stat => {
-                        // Извлекаем числовое значение и наличие + символа
-                        const textContent = stat.textContent.trim();
-                        const target = parseFloat(textContent);
-                        const hasPlus = textContent.includes('+');
-
-                        // Reset to empty for animation
-                        stat.textContent = '';
-                        stat.classList.add('animating');
-
-                        // Start counter animation
-                        animateCounter(stat, target, 2000, hasPlus);
-                    });
-                }
-            }
-        });
-    }, observerOptions) : null;
-
-    // Observe all stat number elements
     const statNumbers = document.querySelectorAll('.stat-number');
-
-    // Initially observe all stats (если Intersection Observer поддерживается)
-    if (hasIntersectionObserver && observer) {
-        statNumbers.forEach(stat => {
-            observer.observe(stat);
-        });
-    } else {
-        // Если Intersection Observer не поддерживается, запускаем анимацию сразу
-        triggerInitialAnimation();
-    }
-
-    // Функция для первоначальной анимации (fallback)
-    function triggerInitialAnimation() {
-        const stats = Array.from(statNumbers).filter(stat => 
-            !stat.classList.contains('animated') && !stat.classList.contains('animating')
-        );
+    
+    if (statNumbers.length === 0) return;
+    
+    let hasAnimated = false;
+    
+    function animateCounter(element, target, duration, hasPlus) {
+        let startTime = null;
         
-        if (stats.length > 0 && !isAnimating) {
-            isAnimating = true;
+        function update(currentTime) {
+            if (!startTime) startTime = currentTime;
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
             
-            // Запускаем анимацию для всех элементов одновременно
-            stats.forEach(stat => {
-                const rect = stat.getBoundingClientRect();
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    const textContent = stat.textContent.trim();
-                    const target = parseFloat(textContent);
-                    const hasPlus = textContent.includes('+');
-
-                    // Reset to empty for animation
-                    stat.textContent = '';
-                    stat.classList.add('animating');
-                    animateCounter(stat, target, 2000, hasPlus);
+            // Easing function (ease-out cubic)
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(eased * target);
+            element.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent = hasPlus ? target + '+' : target;
+                element.classList.remove('animating');
+                element.classList.add('animated');
+            }
+        }
+        
+        element.classList.add('animating');
+        requestAnimationFrame(update);
+    }
+    
+    function startAnimation() {
+        if (hasAnimated) return;
+        hasAnimated = true;
+        
+        // Небольшая задержка, чтобы секция успела стать видимой
+        // (main.js устанавливает opacity: 0 на секциях с переходом 0.8s)
+        setTimeout(() => {
+            statNumbers.forEach(stat => {
+                const textContent = stat.textContent.trim();
+                const target = parseFloat(textContent);
+                const hasPlus = textContent.includes('+');
+                
+                animateCounter(stat, target, 2000, hasPlus);
+            });
+        }, 400);
+    }
+    
+    // Используем Intersection Observer для запуска анимации при скролле
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startAnimation();
+                    observer.disconnect();
                 }
             });
-        }
-    }
-
-    // Оптимизированный обработчик scroll события
-    function animateStatsFallback() {
-        // Проверяем, есть ли элементы, которые нужно анимировать
-        const needsAnimation = Array.from(statNumbers).some(stat => 
-            !stat.classList.contains('animated') && !stat.classList.contains('animating')
-        );
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
         
-        if (needsAnimation && !isAnimating) {
-            triggerInitialAnimation();
+        statNumbers.forEach(stat => observer.observe(stat));
+    } else {
+        // Fallback: анимация при скролле
+        function checkVisibility() {
+            const rect = statNumbers[0].getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                startAnimation();
+                window.removeEventListener('scroll', checkVisibility);
+            }
         }
+        window.addEventListener('scroll', checkVisibility, { passive: true });
+        checkVisibility();
     }
-
-    // Добавляем throttle для оптимизации scroll событий
-    let isScrolling = false;
-    window.addEventListener('scroll', () => {
-        if (!isScrolling) {
-            requestAnimationFrame(() => {
-                animateStatsFallback();
-                isScrolling = false;
-            });
-            isScrolling = true;
-        }
-    }, { passive: true });
-
-    // Clean up function to prevent memory leaks
-    const cleanup = () => {
-        window.removeEventListener('scroll', animateStatsFallback);
-        observer.disconnect();
-    };
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', cleanup);
 });

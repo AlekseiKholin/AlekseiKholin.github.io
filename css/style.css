@@ -381,36 +381,26 @@ p {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     display: block;
-    transition: all 0.3s ease;
-    opacity: 1;
+    transition: transform 0.3s ease;
     transform: scale(1);
 }
 
 .stat-number.animating {
-    color: var(--primary-color);
-    transform: scale(1.1);
-    animation: counterPulse 2s ease-out;
+    /* Убираем gradient-clip, чтобы текст был видимым во время анимации */
+    -webkit-text-fill-color: var(--primary-color);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    transform: scale(1.05);
 }
 
 .stat-number.animated {
-    color: inherit;
+    /* Возвращаем gradient-эффект после завершения анимации */
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     transform: scale(1);
-    animation: none;
-}
-
-@keyframes counterPulse {
-    0% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    50% {
-        opacity: 0.7;
-        transform: scale(1.1);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .stat-label {
