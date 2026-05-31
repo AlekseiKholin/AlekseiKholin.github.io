@@ -386,11 +386,11 @@ p {
 }
 
 .stat-number.animating {
-    /* Убираем gradient-clip, чтобы текст был видимым во время анимации */
-    -webkit-text-fill-color: var(--primary-color);
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
+    /* Сохраняем градиент во время анимации */
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     transform: scale(1.05);
 }
 
