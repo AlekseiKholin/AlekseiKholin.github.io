@@ -91,12 +91,6 @@ git push -u origin main
 - **Портфолио** - примеры работ
 - **Контакты** - форма связи и информация
 
-## 📝 Контакты
-
-Для связи используйте форму на сайте или:
-- 📧 Email: aleksei@example.com
-- 💼 LinkedIn: linkedin.com/in/aleksei
-- 🐙 GitHub: github.com/aleksei
 
 ## 📄 Лицензия
 
