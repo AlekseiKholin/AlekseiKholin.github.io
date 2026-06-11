@@ -560,6 +560,7 @@ p {
 .portfolio-image {
     height: 200px;
     overflow: hidden;
+    width: 100%;
 }
 
 .portfolio-image-src {
