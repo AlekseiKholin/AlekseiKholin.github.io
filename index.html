@@ -336,23 +336,32 @@
                     </a>
 
                 </div>
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" required>
-                            <label for="name">Имя</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" required>
-                            <label for="email">Email</label>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                            <label for="message">Сообщение</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Отправить</button>
-                    </form>
-                </div>
+                    <div class="contact-form">
+                    <!-- Добавлены action и method -->
+                        <form id="contactForm" action="https://formspree.io/f/mqeowqzb" method="POST">
+                            
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" required>
+                                <label for="name">Имя</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" required>
+                                <label for="email">Email</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                                <label for="message">Сообщение</label>
+                            </div>
+
+                            <!--  скрытое поле для защиты от спам-ботов -->
+                            <input type="text" name="_gotcha" style="display:none !important">
+
+                            <!-- Добавим id кнопке, чтобы блокировать ее во время отправки -->
+                            <button type="submit" id="submitBtn" class="btn btn-primary">Отправить</button>
+                        </form>
+                    </div>
             </div>
         </div>
     </section>

@@ -104,27 +104,53 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Contact form handling
     const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(contactForm);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const message = formData.get('message');
-            
-            // Simple validation
-            if (name && email && message) {
-                // Show success message
-                showNotification('Спасибо за ваше сообщение! Я свяжусь с вами в ближайшее время.', 'success');
-                
-                // Reset form
-                contactForm.reset();
-            } else {
-                showNotification('Пожалуйста, заполните все поля.', 'error');
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault(); // Останавливаем стандартную перезагрузку страницы
+
+        // Блокируем кнопку и меняем текст, чтобы пользователь не нажал дважды
+        submitBtn.disabled = true;
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = 'Отправка...';
+
+        // Собираем данные формы
+        const formData = new FormData(contactForm);
+
+        try {
+        // Отправляем данные на Formspree
+        const response = await fetch(contactForm.action, {
+            method: contactForm.method,
+            body: formData,
+            headers: {
+            'Accept': 'application/json' // заставляет Formspree вернуть JSON, а не делать редирект
             }
         });
+
+        if (response.ok) {
+            // Успешная отправка
+            showNotification('Спасибо за ваше сообщение! Я свяжусь с вами в ближайшее время.', 'success');
+            contactForm.reset(); // Очищаем форму
+        } else {
+            // Ошибка со стороны сервера Formspree
+            const data = await response.json();
+            if (data.errors) {
+            showNotification('Ошибка: ' + data.errors.map(error => error.message).join(', '), 'error');
+            } else {
+            showNotification('Произошла ошибка при отправке. Попробуйте позже.', 'error');
+            }
+        }
+        } catch (error) {
+        // Ошибка сети (например, нет интернета)
+        showNotification('Ошибка сети. Проверьте подключение к интернету.', 'error');
+        console.error('Formspree error:', error);
+        } finally {
+        // Возвращаем кнопку в исходное состояние в любом случае
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+        }
+    });
     }
     
     // Modal functionality for resume download
